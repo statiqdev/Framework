@@ -27,7 +27,6 @@ namespace Statiq.Razor
             _hostingEnvironment = hostingEnviroment.ThrowIfNull(nameof(hostingEnviroment));
         }
 
-        [Obsolete("Use GetItem(string path, string fileKind) instead.")]
         public override RazorProjectItem GetItem(string path)
         {
             return GetItem(path, fileKind: null);
