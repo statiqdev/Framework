@@ -1,5 +1,24 @@
 <Project>
   <PropertyGroup>
+    <!--
+      Warnings that appeared with .NET 8.0.100
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1021
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1040
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1062
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1505
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1710
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1711
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1720
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1721
+      https://learn.microsoft.com/dotnet/fundamentals/code-analysis/quality-rules/ca1725
+      https://aka.ms/dotnet-warnings/SYSLIB0013
+      https://github.com/Microsoft/vs-threading/blob/master/doc/analyzers/VSTHRD103.md
+
+      CS0672 - Member 'ItemStream<TItem>.InitializeLifetimeService()' overrides obsolete member 'MarshalByRefObject.InitializeLifetimeService()'
+      SYSLIB0010: 'MarshalByRefObject.InitializeLifetimeService()' is obsolete: 'This Remoting API is not supported and throws PlatformNotSupportedException.'
+    -->
+    <NoWarn>CA1021;CA1040;CA1062;CA1505;CA1710;CA1711;CA1720;CA1721;CA1725;CS0672;SYSLIB0010;SYSLIB0013;VSTHRD103;$(NoWarn)</NoWarn>
+    <TargetFrameworks>netcoreapp3.1;net6.0;net8.0</TargetFrameworks>
     <Version Condition="'$(StatiqFrameworkVersion)' == ''">1.0.0</Version>
     <Version Condition="'$(StatiqFrameworkVersion)' != ''">$(StatiqFrameworkVersion)</Version>
     <InformationalVersion>$(Version)</InformationalVersion>
