@@ -228,7 +228,7 @@ namespace Statiq.Common
             }
 
             // Check a normal conversion (in case it's a special type that implements a cast, IConvertible, or something)
-            if (MetadataTypeConverter<T>.TryConvert(value, out result))
+            if (MetadataTypeConverter<T>.TryConvertInvariant(value, out result))
             {
                 return true;
             }
