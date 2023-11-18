@@ -435,7 +435,11 @@ namespace Statiq.CodeAnalysis.Tests
                 // Then
                 results.Single(x => x["Name"].Equals("Green"))["SpecificKind"].ShouldBe("Class");
                 results.Single(x => x["Name"].Equals("Blue"))["SpecificKind"].ShouldBe("Class");
+#if NET8_0_OR_GREATER
                 results.Single(x => x["Name"].Equals("Red"))["SpecificKind"].ShouldBe("Struct");
+#else
+                results.Single(x => x["Name"].Equals("Red"))["SpecificKind"].ShouldBe("Structure");
+#endif
                 results.Single(x => x["Name"].Equals("Yellow"))["SpecificKind"].ShouldBe("Enum");
             }
 
