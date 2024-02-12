@@ -69,12 +69,12 @@ namespace Statiq.App.Tests.Bootstrapper
                 result.LogMessages.Count(x => x.FormattedMessage.StartsWith("Foo/Process")).ShouldBe(expected);
             }
 
-            [TestCase("Trace", false)]
-            [TestCase("Debug", false)]
-            [TestCase("Information", false)]
-            [TestCase("Warning", false)]
-            [TestCase("Error", true)]
-            [TestCase("Critical", true)]
+            [TestCase(LogLevel.Trace, false)]
+            [TestCase(LogLevel.Debug, false)]
+            [TestCase(LogLevel.Information, false)]
+            [TestCase(LogLevel.Warning, false)]
+            [TestCase(LogLevel.Error, true)]
+            [TestCase(LogLevel.Critical, true)]
             public async Task DefaultFailureLogLevel(LogLevel logLevel, bool expectedFailure)
             {
                 // Given
@@ -91,12 +91,12 @@ namespace Statiq.App.Tests.Bootstrapper
                 result.ExitCode.ShouldBe(expectedFailure ? (int)ExitCode.LogLevelFailure : (int)ExitCode.Normal);
             }
 
-            [TestCase("Trace", false)]
-            [TestCase("Debug", false)]
-            [TestCase("Information", false)]
-            [TestCase("Warning", true)]
-            [TestCase("Error", true)]
-            [TestCase("Critical", true)]
+            [TestCase(LogLevel.Trace, false)]
+            [TestCase(LogLevel.Debug, false)]
+            [TestCase(LogLevel.Information, false)]
+            [TestCase(LogLevel.Warning, true)]
+            [TestCase(LogLevel.Error, true)]
+            [TestCase(LogLevel.Critical, true)]
             public async Task SetFailureLogLevel(LogLevel logLevel, bool expectedFailure)
             {
                 // Given

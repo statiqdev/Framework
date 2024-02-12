@@ -49,8 +49,8 @@ namespace Statiq.Common.Tests.IO.Globbing
                 IEnumerable<IFile> matchesReversedSlash = Globber.GetFiles(directory, patterns.Select(x => x.Replace("/", "\\")));
 
                 // Then
-                CollectionAssert.AreEquivalent(resultPaths, matches.Select(x => x.Path.FullPath));
-                CollectionAssert.AreEquivalent(resultPaths, matchesReversedSlash.Select(x => x.Path.FullPath));
+                Assert.That(matches.Select(x => x.Path.FullPath), Is.EquivalentTo(resultPaths));
+                Assert.That(matchesReversedSlash.Select(x => x.Path.FullPath), Is.EquivalentTo(resultPaths));
             }
 
             [Test]
@@ -110,8 +110,8 @@ namespace Statiq.Common.Tests.IO.Globbing
                 IEnumerable<IFile> matchesReversedSlash = Globber.GetFiles(directory, patterns.Select(x => x.Replace("/", "\\")));
 
                 // Then
-                CollectionAssert.AreEquivalent(resultPaths, matches.Select(x => x.Path.FullPath));
-                CollectionAssert.AreEquivalent(resultPaths, matchesReversedSlash.Select(x => x.Path.FullPath));
+                Assert.That(matches.Select(x => x.Path.FullPath), Is.EquivalentTo(resultPaths));
+                Assert.That(matchesReversedSlash.Select(x => x.Path.FullPath), Is.EquivalentTo(resultPaths));
             }
 
             // Addresses a specific problem with nested folders in a wildcard search
@@ -132,7 +132,7 @@ namespace Statiq.Common.Tests.IO.Globbing
                 IEnumerable<IFile> matches = Globber.GetFiles(directory, new[] { "**/*.txt" });
 
                 // Then
-                CollectionAssert.AreEquivalent(new[] { "/a/b/c/x.txt", "/a/bar/foo/y.txt" }, matches.Select(x => x.Path.FullPath));
+                Assert.That(matches.Select(x => x.Path.FullPath), Is.EquivalentTo(new[] { "/a/b/c/x.txt", "/a/bar/foo/y.txt" }));
             }
 
             [TestCase("/a/b")]
@@ -224,7 +224,7 @@ namespace Statiq.Common.Tests.IO.Globbing
                 IEnumerable<string> result = Globber.ExpandBraces(pattern);
 
                 // Then
-                CollectionAssert.AreEquivalent(expected, result);
+                Assert.That(result, Is.EquivalentTo(expected));
             }
         }
 

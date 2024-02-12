@@ -36,16 +36,19 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(a, new ConcatDocuments(b), c);
 
                 // Then
-                Assert.AreEqual(1, a.ExecuteCount);
-                Assert.AreEqual(1, b.ExecuteCount);
-                Assert.AreEqual(1, c.ExecuteCount);
-                Assert.AreEqual(1, a.InputCount);
-                Assert.AreEqual(2, b.InputCount);
-                Assert.AreEqual(8, c.InputCount);
-                Assert.AreEqual(2, a.OutputCount);
-                Assert.AreEqual(6, b.OutputCount);
-                Assert.AreEqual(32, c.OutputCount);
-                results.Count.ShouldBe(32);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(a.ExecuteCount, Is.EqualTo(1));
+                    Assert.That(b.ExecuteCount, Is.EqualTo(1));
+                    Assert.That(c.ExecuteCount, Is.EqualTo(1));
+                    Assert.That(a.InputCount, Is.EqualTo(1));
+                    Assert.That(b.InputCount, Is.EqualTo(2));
+                    Assert.That(c.InputCount, Is.EqualTo(8));
+                    Assert.That(a.OutputCount, Is.EqualTo(2));
+                    Assert.That(b.OutputCount, Is.EqualTo(6));
+                    Assert.That(c.OutputCount, Is.EqualTo(32));
+                    Assert.That(results, Has.Count.EqualTo(32));
+                });
             }
         }
     }
