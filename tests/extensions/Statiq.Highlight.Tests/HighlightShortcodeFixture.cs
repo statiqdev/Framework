@@ -36,7 +36,7 @@ namespace Statiq.Highlight.Tests
                 ShortcodeResult result = shortcode.Execute(args.ToArray(), "int foo = 3;", document, context);
 
                 // Then
-                string expected = "<code class=\"language-ebnf hljs\"><span class=\"hljs-attribute\">int foo</span> = 3;</code>";
+                string expected = "<code class=\"language-cpp hljs\"><span class=\"hljs-type\">int</span> foo = <span class=\"hljs-number\">3</span>;</code>";
                 if (expectedPre)
                 {
                     expected = $"<pre>{expected}</pre>";
@@ -66,7 +66,7 @@ namespace Statiq.Highlight.Tests
                 ShortcodeResult result = shortcode.Execute(args.ToArray(), "int foo = 3;\r\nint bar = 6;", document, context);
 
                 // Then
-                string expected = "<code class=\"language-ebnf hljs\"><span class=\"hljs-attribute\">int foo</span> = 3;\r\n<span class=\"hljs-attribute\">int bar</span> = 6;</code>";
+                string expected = "<code class=\"language-cpp hljs\"><span class=\"hljs-type\">int</span> foo = <span class=\"hljs-number\">3</span>;\n<span class=\"hljs-type\">int</span> bar = <span class=\"hljs-number\">6</span>;</code>";
                 if (expectedPre)
                 {
                     expected = $"<pre>{expected}</pre>";
@@ -94,7 +94,7 @@ namespace Statiq.Highlight.Tests
 
                 // Then
                 result.ContentProvider.GetStream().ReadToEnd().ShouldBe(
-                    "<code class=\"language-csharp hljs\"><span class=\"hljs-keyword\">int</span> foo = <span class=\"hljs-number\">3</span>;</code>");
+                    "<code class=\"language-csharp hljs\"><span class=\"hljs-built_in\">int</span> foo = <span class=\"hljs-number\">3</span>;</code>");
             }
 
             [Test]
@@ -117,7 +117,7 @@ namespace Statiq.Highlight.Tests
 
                 // Then
                 result.ContentProvider.GetStream().ReadToEnd().ShouldBe(
-                    "<div class=\"language-ebnf hljs\"><span class=\"hljs-attribute\">int foo</span> = 3;</div>");
+                    "<div class=\"language-cpp hljs\"><span class=\"hljs-type\">int</span> foo = <span class=\"hljs-number\">3</span>;</div>");
             }
         }
     }

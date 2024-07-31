@@ -144,7 +144,7 @@ the family Rosaceae.</p>
             }
 
             [Test]
-            public async Task DoesRenderDefintionListWithSpecificConfiguration()
+            public async Task DoesRenderDefinitionListWithSpecificConfiguration()
             {
                 // Given
                 const string input = @"Apple
@@ -192,6 +192,46 @@ the family Rosaceae.</dd>
 ";
                 TestDocument document = new TestDocument(input);
                 RenderMarkdown markdown = new RenderMarkdown().EscapeAt(false);
+
+                // When
+                TestDocument result = await ExecuteAsync(document, markdown).SingleAsync();
+
+                // Then
+                result.Content.ShouldBe(output, StringCompareShould.IgnoreLineEndings);
+            }
+
+            [Test]
+            public async Task ShouldEscapeAtWhenOverriddenByMetadata()
+            {
+                // Given
+                const string input = "Looking @Good, @Man!";
+                const string output = @"<p>Looking &#64;Good, &#64;Man!</p>
+";
+                TestDocument document = new TestDocument(input)
+                {
+                    { MarkdownKeys.EscapeAtInMarkdown, true }
+                };
+                RenderMarkdown markdown = new RenderMarkdown().EscapeAt(false);
+
+                // When
+                TestDocument result = await ExecuteAsync(document, markdown).SingleAsync();
+
+                // Then
+                result.Content.ShouldBe(output, StringCompareShould.IgnoreLineEndings);
+            }
+
+            [Test]
+            public async Task ShouldNotEscapeAtWhenOverriddenByMetadata()
+            {
+                // Given
+                const string input = "Looking @Good, @Man!";
+                const string output = @"<p>Looking @Good, @Man!</p>
+";
+                TestDocument document = new TestDocument(input)
+                {
+                    { MarkdownKeys.EscapeAtInMarkdown, false }
+                };
+                RenderMarkdown markdown = new RenderMarkdown().EscapeAt();
 
                 // When
                 TestDocument result = await ExecuteAsync(document, markdown).SingleAsync();
@@ -405,6 +445,24 @@ Looking @Good, \@Man!
 ```";
                 const string output = @"<pre><code>Looking &#64;Good, @Man!
 </code></pre>
+";
+                TestDocument document = new TestDocument(input);
+                RenderMarkdown markdown = new RenderMarkdown();
+
+                // When
+                TestDocument result = await ExecuteAsync(document, markdown).SingleAsync();
+
+                // Then
+                result.Content.ShouldBe(output, StringCompareShould.IgnoreLineEndings);
+            }
+
+            // Very special exception since mailto seems to be one place where escaping is universally bad
+            [Test]
+            public async Task ShouldNotEscapeAtInMailToLink()
+            {
+                // Given
+                const string input = "<div>Looking <a href=\"mailto:foo@bar.com\">Good</a>, @Man!</div>";
+                const string output = @"<div>Looking <a href=""mailto:foo@bar.com"">Good</a>, &#64;Man!</div>
 ";
                 TestDocument document = new TestDocument(input);
                 RenderMarkdown markdown = new RenderMarkdown();
@@ -808,6 +866,30 @@ End";
                         }
                     },
                     input);
+                RenderMarkdown markdown = new RenderMarkdown();
+
+                // When
+                TestDocument result = await ExecuteAsync(document, markdown).SingleAsync();
+
+                // Then
+                result.Content.ShouldBe(output, StringCompareShould.IgnoreLineEndings);
+            }
+
+            // Older versions of Markdig had a problem related to this pattern, see
+            // https://github.com/statiqdev/Statiq.Framework/issues/267
+            [Test]
+            public async Task ShouldCorrectlyRenderAltTextWithFollowingText()
+            {
+                // Given
+                const string input = @"![alt text][fastcar2]
+
+[fastcar2]: img/car.jfif ""VROOM""
+
+any arbitrary text";
+                const string output = @"<p><img src=""img/car.jfif"" alt=""alt text"" title=""VROOM"" /></p>
+<p>any arbitrary text</p>
+";
+                TestDocument document = new TestDocument(input);
                 RenderMarkdown markdown = new RenderMarkdown();
 
                 // When

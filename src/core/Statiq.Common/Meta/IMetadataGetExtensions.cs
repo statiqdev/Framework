@@ -13,8 +13,8 @@ namespace Statiq.Common
         /// </summary>
         /// <remarks>
         /// This method will also materialize <see cref="IMetadataValue"/> and
-        /// evaluate script strings (a key that starts with "=>" will be treated
-        /// as a script and evaluated).
+        /// evaluate script strings. A key that starts with "=>" (cached) or "->" (uncached)
+        /// will be treated as a script and evaluated (without caching regardless of script prefix).
         /// </remarks>
         /// <param name="metadata">The metadata instance.</param>
         /// <typeparam name="TValue">The desired return type.</typeparam>
@@ -28,8 +28,8 @@ namespace Statiq.Common
         {
             if (metadata is object && key is object)
             {
-                // Script
-                if (IScriptHelper.TryGetScriptString(key, out string script))
+                // Script-based key (we don't care if it's cached in this code path, script keys be evaluated every time from here)
+                if (IScriptHelper.TryGetScriptString(key, out string script).HasValue)
                 {
                     IExecutionContext context = IExecutionContext.Current;
 #pragma warning disable VSTHRD002 // Synchronously waiting on tasks or awaiters may cause deadlocks. Use await or JoinableTaskFactory.Run instead.

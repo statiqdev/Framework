@@ -94,7 +94,7 @@ namespace Statiq.Highlight
             {
                 if (string.IsNullOrWhiteSpace(_highlightJsFile))
                 {
-                    x.ExecuteResource("highlight-all.js", typeof(HighlightCode));
+                    x.ExecuteResource("highlight.js", typeof(HighlightCode));
                 }
                 else
                 {

@@ -4,7 +4,7 @@
     <PackageTags>Statiq Static StaticContent StaticSite Blog BlogEngine HTML CSS JS WebMarkupMin</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="System.Linq.Async" Version="4.0.0" />
+    <PackageReference Include="System.Linq.Async" Version="6.0.1" />
     <PackageReference Include="WebMarkupMin.Core" Version="2.3.0" />
   </ItemGroup>
   <ItemGroup>

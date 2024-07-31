@@ -276,7 +276,10 @@ namespace Statiq.Markdown
             }
 
             // Add the @ escaping extension if escaping @ symbols
-            if (_escapeAt)
+            bool escapeAt = input.ContainsKey(MarkdownKeys.EscapeAtInMarkdown)
+                ? input.GetBool(MarkdownKeys.EscapeAtInMarkdown)
+                : _escapeAt;
+            if (escapeAt)
             {
                 if (extensions == _extensions)
                 {
@@ -300,7 +303,7 @@ namespace Statiq.Markdown
                     writer,
                     _prependLinkRoot,
                     _passThroughRawFence,
-                    _escapeAt,
+                    escapeAt,
                     _configuration,
                     extensions);
                 if (markdownDocument is null)

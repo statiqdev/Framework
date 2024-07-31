@@ -19,9 +19,10 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="3.1.18" />
     <PackageReference Include="Microsoft.Extensions.Logging" Version="3.1.18" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="3.1.18" />
-    <PackageReference Include="NetEscapades.Configuration.Yaml" Version="2.0.1" />
+    <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0" />
     <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
-    <PackageReference Include="Spectre.Console" Version="0.43.0" />
+    <PackageReference Include="Spectre.Console" Version="0.45.0" />
+    <PackageReference Include="Spectre.Console.Cli" Version="0.45.0" />
   </ItemGroup>
 
   <ItemGroup>

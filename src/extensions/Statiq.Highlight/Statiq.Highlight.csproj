@@ -4,10 +4,10 @@
     <PackageTags>Statiq Static StaticContent StaticSite Blog BlogEngine Highlight.js</PackageTags>
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="highlight-all.js" />
+    <None Remove="highlight.js" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="highlight-all.js" />
+    <EmbeddedResource Include="highlight.js" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\core\Statiq.Common\Statiq.Common.csproj" />

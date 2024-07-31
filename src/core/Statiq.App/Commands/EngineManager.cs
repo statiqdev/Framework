@@ -26,6 +26,8 @@ namespace Statiq.App
             IServiceCollection serviceCollection,
             Bootstrapper bootstrapper)
         {
+            Bootstrapper = bootstrapper;
+
             // Get the standard input stream
             string input = null;
             if (commandSettings?.StdIn == true)
@@ -78,6 +80,8 @@ namespace Statiq.App
             _logger.LogInformation($"Cache path:{Environment.NewLine}       {Engine.FileSystem.CachePath}");
         }
 
+        public IBootstrapper Bootstrapper { get; set; }
+
         public Engine Engine { get; }
 
         public string[] Pipelines { get; set; }
@@ -86,16 +90,27 @@ namespace Statiq.App
 
         public async Task<ExitCode> ExecuteAsync(CancellationTokenSource cancellationTokenSource)
         {
+            // Provide a chance to configure the engine manager, which is mainly useful for tweaking
+            // the pipelines and/or engine right before executing
+            Bootstrapper.Configurators.Configure<IEngineManager>(this);
+
+            // Execute the engine and log all errors (including cancellation requests)
             try
             {
                 await Engine.ExecuteAsync(Pipelines, NormalPipelines, cancellationTokenSource?.Token ?? CancellationToken.None);
             }
             catch (Exception ex)
             {
+                // If this was a cancellation, check if it was due to a timeout or an actual cancellation
                 if (ex is OperationCanceledException)
                 {
-                    // No log message for cancellation
-                    return ExitCode.OperationCanceled;
+                    // Was this a "true" cancellation of the engine?
+                    if (Engine.CancellationToken.IsCancellationRequested)
+                    {
+                        _logger.LogInformation("Exited due to engine cancellation request");
+                        return ExitCode.OperationCanceled;
+                    }
+                    _logger.LogCritical("Operation/task timeout occurred or internal cancellation was triggered, inner exception(s) follow (if available)");
                 }
 
                 // Log exceptions not already logged (including those thrown by the engine directly)

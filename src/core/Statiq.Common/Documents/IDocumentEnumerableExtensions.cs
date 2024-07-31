@@ -208,8 +208,28 @@ namespace Statiq.Common
             where TDocument : IDocument =>
             documents.FirstOrDefaultDestination((IEnumerable<string>)patterns);
 
+        /// <summary>
+        /// Determines whether a document is contained in a document collection by ID.
+        /// </summary>
+        /// <remarks>
+        /// Note that the document ID my get "out of sync" when caching is being used. For example, if comparing
+        /// the ID of documents read from disk on a subsequent execution against the same documents cached from
+        /// an earlier execution, the IDs won't match even if the document is the same.
+        /// </remarks>
+        /// <param name="documents">The documents to check.</param>
+        /// <param name="document">The document to check for.</param>
+        /// <returns><c>true</c> if the document is contained in the collection, <c>false</c> otherwise.</returns>
         public static bool ContainsById(this IEnumerable<IDocument> documents, IDocument document) =>
             documents.Contains(document, DocumentIdComparer.Instance);
+
+        /// <summary>
+        /// Determines whether a document is contained in a document collection by source.
+        /// </summary>
+        /// <param name="documents">The documents to check.</param>
+        /// <param name="document">The document to check for.</param>
+        /// <returns><c>true</c> if the document is contained in the collection, <c>false</c> otherwise.</returns>
+        public static bool ContainsBySource(this IEnumerable<IDocument> documents, IDocument document) =>
+            documents.Contains(document, DocumentSourceComparer.Instance);
 
         /// <summary>
         /// Flattens a tree structure.

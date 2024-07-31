@@ -142,7 +142,7 @@ namespace Statiq.Core
                 return await context.ExecuteModulesAsync(Children, context.Inputs);
             }
 
-            // If we're reseting the cache, reset it but then continue
+            // If we're resetting the cache, reset it but then continue
             if (context.Settings.GetBool(Keys.ResetCache))
             {
                 context.LogInformation($"Resetting cache due to {nameof(Keys.ResetCache)} metadata");

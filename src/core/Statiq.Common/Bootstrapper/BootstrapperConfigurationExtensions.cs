@@ -6,7 +6,8 @@ namespace Statiq.Common
 {
     public static class BootstrapperConfigurationExtensions
     {
-        public static TBootstrapper BuildConfiguration<TBootstrapper>(this TBootstrapper bootstrapper, Action<IConfigurationBuilder> action)
+        public static TBootstrapper BuildConfiguration<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IConfigurationBuilder> action)
             where TBootstrapper : IBootstrapper
         {
             bootstrapper.ThrowIfNull(nameof(bootstrapper));
@@ -15,7 +16,8 @@ namespace Statiq.Common
             return bootstrapper;
         }
 
-        public static TBootstrapper ConfigureServices<TBootstrapper>(this TBootstrapper bootstrapper, Action<IServiceCollection> action)
+        public static TBootstrapper ConfigureServices<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IServiceCollection> action)
             where TBootstrapper : IBootstrapper
         {
             bootstrapper.ThrowIfNull(nameof(bootstrapper));
@@ -24,7 +26,8 @@ namespace Statiq.Common
             return bootstrapper;
         }
 
-        public static TBootstrapper ConfigureServices<TBootstrapper>(this TBootstrapper bootstrapper, Action<IServiceCollection, IReadOnlySettings> action)
+        public static TBootstrapper ConfigureServices<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IServiceCollection, IReadOnlySettings> action)
             where TBootstrapper : IBootstrapper
         {
             bootstrapper.ThrowIfNull(nameof(bootstrapper));
@@ -33,7 +36,8 @@ namespace Statiq.Common
             return bootstrapper;
         }
 
-        public static TBootstrapper ConfigureServices<TBootstrapper>(this TBootstrapper bootstrapper, Action<IServiceCollection, IReadOnlySettings, IReadOnlyFileSystem> action)
+        public static TBootstrapper ConfigureServices<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IServiceCollection, IReadOnlySettings, IReadOnlyFileSystem> action)
             where TBootstrapper : IBootstrapper
         {
             bootstrapper.ThrowIfNull(nameof(bootstrapper));
@@ -42,12 +46,13 @@ namespace Statiq.Common
             return bootstrapper;
         }
 
-        public static TBootstrapper ConfigureEngine<TBootstrapper>(this TBootstrapper bootstrapper, Action<IEngine> action)
+        public static TBootstrapper ConfigureEngine<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IEngine> action)
             where TBootstrapper : IBootstrapper
         {
             bootstrapper.ThrowIfNull(nameof(bootstrapper));
             action.ThrowIfNull(nameof(action));
-            bootstrapper.Configurators.Add<IEngine>(x => action(x));
+            bootstrapper.Configurators.Add(action);
             return bootstrapper;
         }
     }

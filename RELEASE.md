@@ -1,6 +1,42 @@
+# 1.0.0-beta.72
+
+- Added a `DocumentSourceComparer` class that implements `IEqualityComparer<IDocument>` and can be used to compare documents by source path.
+- Added a `IEnumerable<IDocument>.ContainsBySource()` extension method to check if a collection of documents contains a document with a given source path.
+- Added an improved warning message and early exit out of recursive settings expansion. 
+- Added a `MediaTypes.IsMediaType()` method to help determine if a given path matches specified media type(s).
+
+# 1.0.0-beta.71
+
+- Modified the behavior of computed metadata values to cache the value for a given document when using the `=>` prefix. The previous behavior that evaluates a computed value every time it's accessed can still be used by prefixing with `->` instead. In theory this change shouldn't result in any differences in behavior since documents are immutable in the first place (so caching wouldn't be any different from re-evaluating), but if you have computed metadata values that consider state outside the document (such as something like `DateTime.Now`), you'll need to switch those to use the `->` prefix instead.
+- Updated JavaScriptEngineSwitcher.Core and JavaScriptEngineSwitcher.Jint.
+- Updated `highlight.js` used in `Statiq.Highlight` (#269).
+
+# 1.0.0-beta.70
+
+- Updated Markdig to 0.31.0 to fix an upstream bug when using alt text on images (#267).
+- Updated Spectre.Console (#247, thanks @devlead).
+- Updated JavaScriptEngineSwitcher (#246, thanks @devlead).
+- Updated Microsoft.Data.SqlClient (#248, thanks @devlead).
+- Updated System.Linq.Async (#249, thanks @devlead).
+- Updated YamlDotNet (#263, thanks @NikoMix).
+- Updated NetEscapades.Configuration.Yaml in reaction to update to YamlDotNet.
+- Ensures that the `GenerateFeeds` module always sets a feed title, even if one isn't provided.
+- Added a warning to `GenerateFeeds` if a feed link isn't set, either through the `Host` setting or otherwise.
+
+# 1.0.0-beta.69
+
+- Added a configurator for the `IEngineManager` and a corresponding bootstrapper `ConfigureEngineManager()` extension method to allow customizing the engine manager used in most commands just prior to it executing the engine (useful for last-minute pipeline customization and some other niche use cases).
+
+# 1.0.0-beta.68
+
+- Improved the `HttpClient.SendWithRetryAsync()` extension to log retries at the information level since they may indicate other problems, and to retry during internal `HttpClient` timeouts.
+- Improved exception logging to the console by making sure internal cancellations and timeout exceptions are logged (previously they were silent, which could create the impression nothing went wrong).
+
 # 1.0.0-beta.67
 
 - Fixed a bug that still resulted in file cleaning even when `CleanMode.None` is set (I.e. `--noclean`).
+- `RenderMarkdown` no longer escapes `@` characters inside `mailto` links (#254).
+- Added a `EscapeAtInMarkdown` setting that can control `@` escaping in Markdown files by the `RenderMarkdown` module on a file-by-file basis (#254).
 
 # 1.0.0-beta.66
 

@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
@@ -32,10 +34,12 @@ namespace Statiq.Core
 
             AsyncRetryPolicy<HttpResponseMessage> retryPolicy = Policy
                 .Handle<HttpRequestException>()
+                .Or<TaskCanceledException>(ex =>
+                    ex.InnerException is IOException || ex.InnerException is SocketException) // Thrown on client timeout, retry
                 .OrResult<HttpResponseMessage>(r => r.StatusCode == TooManyRequests)
                 .WaitAndRetryAsync(retryCount, attempt =>
                 {
-                    IExecutionContext.Current.LogDebug($"HttpClient retry {attempt}");
+                    IExecutionContext.Current.LogInformation($"HttpClient retry {attempt} of {retryCount}");
                     return TimeSpan.FromSeconds(0.5 * Math.Pow(2, attempt));
                 });
 

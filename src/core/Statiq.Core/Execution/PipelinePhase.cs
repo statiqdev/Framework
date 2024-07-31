@@ -108,19 +108,35 @@ namespace Statiq.Core
                 catch (Exception ex)
                 {
                     Outputs = ImmutableArray<IDocument>.Empty;
-                    if (!(ex is OperationCanceledException))
+
+                    // Report on the exception if it's not a "true" cancellation of the engine (I.e. a timeout or internal cancellation)
+                    if (!engine.CancellationToken.IsCancellationRequested)
                     {
+                        string exceptionType = "Exception";
+                        Exception exceptionToLog = ex;
                         LoggedException executeModulesException = ex as LoggedException;
-                        if (executeModulesException is object)
+
+                        // Was this a timeout (already tested that IsCancellationRequested is false)
+                        if (ex is OperationCanceledException)
                         {
-                            ex = executeModulesException.InnerException;
+                            exceptionType = "Timeout/Cancellation";
+                            exceptionToLog = ex.InnerException ?? ex;
                         }
-                        _logger.LogDebug($"Exception while executing pipeline {PipelineName}/{Phase}: {ex}");
-                        if (executeModulesException is object)
+                        else if (executeModulesException is object)
                         {
-                            throw executeModulesException.InnerException;
+                            // ...or was it a logged exception
+                            exceptionToLog = executeModulesException.InnerException;
+                        }
+
+                        // Log the exception (or inner exception)
+                        _logger.LogDebug($"{exceptionType} while executing pipeline {PipelineName}/{Phase}: {exceptionToLog}");
+                        if (executeModulesException is object && exceptionToLog is object)
+                        {
+                            throw exceptionToLog;
                         }
                     }
+
+                    // Always rethrow the exception
                     throw;
                 }
                 finally

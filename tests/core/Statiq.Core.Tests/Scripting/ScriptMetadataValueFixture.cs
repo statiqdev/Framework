@@ -1,4 +1,5 @@
 ﻿using System.Text;
+using System.Threading;
 using NUnit.Framework;
 using Shouldly;
 using Statiq.Common;
@@ -18,7 +19,30 @@ namespace Statiq.Core.Tests.Scripting
             [TestCase("=> { int x = 1 + 2; return $\"ABC {x} XYZ\"; }")]
             [TestCase("=> int x = 1 + 2; return $\"ABC {x} XYZ\";")]
             [TestCase("  => $\"ABC {1+2} XYZ\"")]
-            public void EvaluatesScriptMetadata(string value)
+            public void EvaluatesCachedScriptMetadata(string value)
+            {
+                // Given
+                TestExecutionContext context = new TestExecutionContext();
+                context.ScriptHelper = new ScriptHelper(context);
+                ScriptMetadataValue.TryGetScriptMetadataValue("Foo", value, context, out ScriptMetadataValue scriptMetadataValue);
+                TestDocument document = new TestDocument
+                {
+                    { "Foo", scriptMetadataValue }
+                };
+
+                // When
+                string result = document.GetString("Foo");
+
+                // Then
+                result.ShouldBe("ABC 3 XYZ");
+            }
+
+            [TestCase("-> $\"ABC {1+2} XYZ\"")]
+            [TestCase("-> return $\"ABC {1+2} XYZ\";")]
+            [TestCase("-> { int x = 1 + 2; return $\"ABC {x} XYZ\"; }")]
+            [TestCase("-> int x = 1 + 2; return $\"ABC {x} XYZ\";")]
+            [TestCase("  -> $\"ABC {1+2} XYZ\"")]
+            public void EvaluatesUncachedScriptMetadata(string value)
             {
                 // Given
                 TestExecutionContext context = new TestExecutionContext();
@@ -224,6 +248,48 @@ namespace Statiq.Core.Tests.Scripting
                 // Then
                 fooResult.ShouldBe(3);
                 barResult.ShouldBe(7);
+            }
+
+            [Test]
+            public void ShouldCacheScriptResult()
+            {
+                // Given
+                TestExecutionContext context = new TestExecutionContext();
+                context.ScriptHelper = new ScriptHelper(context);
+                ScriptMetadataValue.TryGetScriptMetadataValue("Foo", "=> DateTime.Now.ToString()", context, out ScriptMetadataValue scriptMetadataValue);
+                TestDocument document = new TestDocument
+                {
+                    { "Foo", scriptMetadataValue }
+                };
+
+                // When
+                string result1 = document.GetString("Foo");
+                Thread.Sleep(100);
+                string result2 = document.GetString("Foo");
+
+                // Then
+                result1.ShouldBe(result2);
+            }
+
+            [Test]
+            public void ShouldNotCacheScriptResult()
+            {
+                // Given
+                TestExecutionContext context = new TestExecutionContext();
+                context.ScriptHelper = new ScriptHelper(context);
+                ScriptMetadataValue.TryGetScriptMetadataValue("Foo", "-> DateTime.Now.Ticks.ToString()", context, out ScriptMetadataValue scriptMetadataValue);
+                TestDocument document = new TestDocument
+                {
+                    { "Foo", scriptMetadataValue }
+                };
+
+                // When
+                string result1 = document.GetString("Foo");
+                Thread.Sleep(100);
+                string result2 = document.GetString("Foo");
+
+                // Then
+                result1.ShouldNotBe(result2);
             }
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Concurrent;
 
 namespace Statiq.Common
 {
@@ -40,6 +39,8 @@ namespace Statiq.Common
         /// <param name="metadata">The metadata object requesting the value.</param>
         /// <returns>The object to use as the value.</returns>
         public override object Get(string key, IMetadata metadata) =>
-            _cache.GetOrAdd((key, metadata), _ => base.Get(key, metadata));
+            _cache.GetOrAdd((key, metadata), (x, self) => self.BaseGet(x.Item1, x.Item2), this);
+
+        private object BaseGet(string key, IMetadata metadata) => base.Get(key, metadata);
     }
 }

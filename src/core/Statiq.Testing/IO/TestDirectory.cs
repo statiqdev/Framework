@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Statiq.Common;
 
@@ -16,14 +17,17 @@ namespace Statiq.Testing
         {
             _fileSystem = fileSystem;
             _fileProvider = fileProvider;
-            Path = path;
+
+            // Use a slash for an empty path (can't compare to NormalizePath.Empty since this might be absolute
+            // in the case of a ".." from the globber, and that's always relative, so compare against FullPath)
+            Path = path.FullPath == string.Empty ? NormalizedPath.Slash : path;
         }
 
         public NormalizedPath Path { get; }
 
         NormalizedPath IFileSystemEntry.Path => Path;
 
-        public bool Exists => _fileProvider.Directories.Contains(Path);
+        public bool Exists => Path == NormalizedPath.Slash || _fileProvider.Directories.Contains(Path);
 
         public DateTime LastWriteTime { get; set; }
 

@@ -104,17 +104,28 @@ namespace Statiq.Common
             // Perform special expansions of IMetadataValue
             if (value is IMetadataValue metadataValue)
             {
-                // Warn if this looks like a recursive call
+                // Warn if this looks like a recursive call, and exit if we get here again
                 (string, IMetadataValue, int) expanding = (key, metadataValue, Thread.CurrentThread.ManagedThreadId);
-                if (!_expandingWarned.Contains(expanding) && !_expanding.Add(expanding))
+                if (!_expanding.Add(expanding))
                 {
-                    string displayString = (metadata as IDocument)?.ToSafeDisplayString();
-                    if (displayString is object)
+                    if (!_expandingWarned.Contains(expanding))
                     {
-                        displayString = " (" + displayString + ")";
+                        // First time so log a warning and continue trying to expand
+                        string displayString = (metadata as IDocument)?.ToSafeDisplayString();
+                        if (displayString is object)
+                        {
+                            displayString = " (" + displayString + ")";
+                        }
+
+                        IExecutionContext.Current.LogWarning(
+                            $"Potential recursive metadata expansion detected for key {key}{displayString}, is an actual value for the key properly defined somewhere?");
+                        _expandingWarned.Add(expanding);
                     }
-                    IExecutionContext.Current.LogWarning("Potential recursive metadata expansion detected for key " + key + displayString);
-                    _expandingWarned.Add(expanding);
+                    else
+                    {
+                        // Second time, so return a default value
+                        return default;
+                    }
                 }
 
                 // Expand the value

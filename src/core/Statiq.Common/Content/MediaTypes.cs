@@ -1127,5 +1127,17 @@ namespace Statiq.Common
         /// <returns>The extensions that result in the specified media type.</returns>
         public static IEnumerable<string> GetExtensions(string mediaType) =>
             ExtensionMappings.Where(x => x.Value.Equals(mediaType, StringComparison.OrdinalIgnoreCase)).Select(x => x.Key);
+
+        /// <summary>
+        /// Checks whether the given path is of the specified media type(s).
+        /// </summary>
+        /// <param name="path">The path to check.</param>
+        /// <param name="mediaTypes">The media types of check.</param>
+        /// <returns><c>true</c> if the path is of the specified media type(s), <c>false</c> otherwise.</returns>
+        public static bool IsMediaType(string path, params string[] mediaTypes)
+        {
+            string pathMediaType = Get(path);
+            return mediaTypes.Any(x => x.Equals(pathMediaType, StringComparison.OrdinalIgnoreCase));
+        }
     }
 }

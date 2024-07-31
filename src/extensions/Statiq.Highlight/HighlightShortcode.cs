@@ -66,7 +66,7 @@ namespace Statiq.Highlight
                 }
                 else
                 {
-                    x.ExecuteResource("highlight-all.js", typeof(Statiq.Highlight.HighlightCode));
+                    x.ExecuteResource("highlight.js", typeof(Statiq.Highlight.HighlightCode));
                 }
             }))
             {

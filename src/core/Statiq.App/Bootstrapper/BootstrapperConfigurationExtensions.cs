@@ -37,5 +37,17 @@ namespace Statiq.App
             bootstrapper.Configurators.Add(configurator);
             return bootstrapper;
         }
+
+        public static TBootstrapper ConfigureEngineManager<TBootstrapper>(
+            this TBootstrapper bootstrapper, Action<IEngineManager> action)
+            where TBootstrapper : IBootstrapper
+        {
+            bootstrapper.ThrowIfNull(nameof(bootstrapper));
+            action.ThrowIfNull(nameof(action));
+            bootstrapper.Configurators.Add(action);
+            return bootstrapper;
+        }
+
+        // Most of the Configure...() methods are in Statiq.Common if they configure a common interface
     }
 }

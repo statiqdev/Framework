@@ -8,7 +8,18 @@ namespace Statiq.Common
 {
     public interface IScriptHelper
     {
-        public const string ScriptStringPrefix = "=>";
+        /// <summary>
+        /// The script prefix to use for script strings that cache their
+        /// values after the first evaluation.
+        /// </summary>
+        public const string CachedValueScriptStringPrefix = "=>";
+
+        /// <summary>
+        /// The script prefix to use for script strings that do not
+        /// cache their values after the first evaluation and re-evaluate
+        /// the value every time it's fetched.
+        /// </summary>
+        public const string UncachedValueScriptStringPrefix = "->";
 
         /// <summary>
         /// Compiles, caches, and evaluates a script.
@@ -31,21 +42,41 @@ namespace Statiq.Common
         /// </summary>
         /// <param name="str">The candidate string.</param>
         /// <param name="script">The trimmed script.</param>
-        /// <returns><c>true</c> if the candidate string is a script string, <c>false</c> otherwise.</returns>
-        public static bool TryGetScriptString(string str, out string script)
+        /// <returns>
+        /// <c>true</c> if the candidate string is a script string that should be cached,
+        /// <c>false</c> if the candidate string is a script string that should not be cached,
+        /// and null otherwise.</returns>
+        public static bool? TryGetScriptString(string str, out string script)
+        {
+            if (TryGetScriptString(str, true, out script))
+            {
+                return true;
+            }
+
+            if (TryGetScriptString(str, false, out script))
+            {
+                return false;
+            }
+
+            script = null;
+            return null;
+        }
+
+        private static bool TryGetScriptString(string str, bool cacheValue, out string script)
         {
             script = null;
+            string prefix = cacheValue ? CachedValueScriptStringPrefix : UncachedValueScriptStringPrefix;
             int c = 0;
             int s = 0;
             for (; c < str.Length; c++)
             {
-                if (s < ScriptStringPrefix.Length)
+                if (s < prefix.Length)
                 {
                     if (s == 0 && char.IsWhiteSpace(str[c]))
                     {
                         continue;
                     }
-                    if (str[c] == ScriptStringPrefix[s])
+                    if (str[c] == prefix[s])
                     {
                         s++;
                         continue;
@@ -53,7 +84,7 @@ namespace Statiq.Common
                 }
                 break;
             }
-            if (s == ScriptStringPrefix.Length)
+            if (s == prefix.Length)
             {
                 script = str[c..];
                 return true;

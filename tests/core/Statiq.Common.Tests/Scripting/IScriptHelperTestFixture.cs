@@ -12,21 +12,29 @@ namespace Statiq.Common.Tests.Scripting
     {
         public class TryGetScriptStringTests : IScriptHelperTestFixture
         {
-            [TestCase("foo", false, null)]
-            [TestCase("=foo", false, null)]
+            [TestCase("foo", null, null)]
+            [TestCase("=foo", null, null)]
             [TestCase("=>foo", true, "foo")]
-            [TestCase(" =foo", false, null)]
+            [TestCase("->foo", false, "foo")]
+            [TestCase(" =foo", null, null)]
             [TestCase(" =>foo", true, "foo")]
-            [TestCase("= >foo", false, null)]
+            [TestCase(" ->foo", false, "foo")]
+            [TestCase("= >foo", null, null)]
+            [TestCase("- >foo", null, null)]
             [TestCase("=> foo", true, " foo")]
+            [TestCase("-> foo", false, " foo")]
             [TestCase(" => foo", true, " foo")]
-            [TestCase("bar=>foo", false, null)]
+            [TestCase(" -> foo", false, " foo")]
+            [TestCase("bar=>foo", null, null)]
+            [TestCase("bar->foo", null, null)]
             [TestCase("  => foo ", true, " foo ")]
-            [TestCase(" = > foo", false, null)]
-            public void GetsScriptString(string input, bool expected, string expectedScript)
+            [TestCase("  -> foo ", false, " foo ")]
+            [TestCase(" = > foo", null, null)]
+            [TestCase(" - > foo", null, null)]
+            public void GetsScriptString(string input, bool? expected, string expectedScript)
             {
                 // Given, When
-                bool result = IScriptHelper.TryGetScriptString(input, out string resultScript);
+                bool? result = IScriptHelper.TryGetScriptString(input, out string resultScript);
 
                 // Then
                 result.ShouldBe(expected);

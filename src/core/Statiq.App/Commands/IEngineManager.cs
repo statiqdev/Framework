@@ -1,10 +1,11 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
+using Statiq.Common;
 using Statiq.Core;
 
 namespace Statiq.App
 {
-    public interface IEngineManager
+    public interface IEngineManager : IConfigurable
     {
         Engine Engine { get; }
 

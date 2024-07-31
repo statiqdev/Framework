@@ -462,7 +462,8 @@ namespace Statiq.CodeAnalysis
                 .WithReferences(mscorlib)
                 .WithOptions(new CSharpCompilationOptions(
                     OutputKind.DynamicallyLinkedLibrary,
-                    xmlReferenceResolver: new XmlFileResolver(context.FileSystem.RootPath.FullPath)));
+                    xmlReferenceResolver: new XmlFileResolver(
+                        context.FileSystem.RootPath.FullPath == NormalizedPath.Slash ? null : context.FileSystem.RootPath.FullPath)));
 
             // Add the input source and references
             List<ISymbol> symbols = new List<ISymbol>();
