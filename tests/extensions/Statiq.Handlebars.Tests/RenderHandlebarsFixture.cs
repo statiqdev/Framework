@@ -187,7 +187,11 @@ namespace Statiq.Handlebars.Tests
                     .WithHelper(
                         "link_to",
                         Config.FromValue<HandlebarsHelper>((writer, context, _) =>
-                            HandlebarsExtensions.WriteSafeString(writer, "<a href='" + context.url + "'>" + context.text + "</a>")));
+                        {
+                            string url = context.GetValue<string>("url");
+                            string text = context.GetValue<string>("text");
+                            HandlebarsExtensions.WriteSafeString(writer, $"<a href='{url}'>{text}</a>");
+                        }));
 
                 // When
                 TestDocument result = await ExecuteAsync(document, handlebars).SingleAsync();
@@ -302,7 +306,11 @@ The animal, Chewy, is not a dog.
 
                 RenderHandlebars handlebars = new RenderHandlebars()
                     .Configure((_, __, x) => x.RegisterHelper("link_to", (writer, context, _) =>
-                        HandlebarsExtensions.WriteSafeString(writer, "<a href='" + context.url + "'>" + context.text + "</a>")));
+                    {
+                        string url = context.GetValue<string>("url");
+                        string text = context.GetValue<string>("text");
+                        HandlebarsExtensions.WriteSafeString(writer, $"<a href='{url}'>{text}</a>");
+                    }));
 
                 // When
                 TestDocument result = await ExecuteAsync(document, handlebars).SingleAsync();

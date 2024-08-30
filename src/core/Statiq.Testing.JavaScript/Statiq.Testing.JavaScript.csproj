@@ -5,10 +5,13 @@
     <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="JavaScriptEngineSwitcher.Core" Version="3.21.0" />
-    <PackageReference Include="JavaScriptEngineSwitcher.Jint" Version="3.21.2" />
+    <PackageReference Include="JavaScriptEngineSwitcher.Core" Version="3.24.1" />
+    <PackageReference Include="JavaScriptEngineSwitcher.Jint" Version="3.27.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Statiq.Common\Statiq.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" />
   </ItemGroup>
 </Project>

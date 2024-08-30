@@ -328,10 +328,9 @@ namespace Statiq.Images
 
                 // Get the image
                 Image<Rgba32> image;
-                IImageFormat imageFormat;
                 using (Stream stream = input.GetContentStream())
                 {
-                    image = Image.Load<Rgba32>(stream, out imageFormat);
+                    image = Image.Load<Rgba32>(stream);
                 }
 
                 // Mutate the image with the specified operations, if there are any
@@ -357,7 +356,7 @@ namespace Statiq.Images
 
                 // Invoke output actions
                 IEnumerable<OutputAction> outputActions = operations.OutputActions.Count == 0
-                    ? (IEnumerable<OutputAction>)new[] { new OutputAction((i, s) => i.Save(s, imageFormat), null) }
+                    ? (IEnumerable<OutputAction>)new[] { new OutputAction((i, s) => i.Save(s, image.Metadata.DecodedImageFormat), null) }
                     : operations.OutputActions;
                 return outputActions.Select(action =>
                 {

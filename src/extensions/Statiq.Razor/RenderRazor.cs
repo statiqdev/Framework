@@ -181,6 +181,8 @@ namespace Statiq.Razor
         /// <inheritdoc />
         protected override async Task<IEnumerable<IDocument>> ExecuteContextAsync(IExecutionContext context)
         {
+            ArgumentNullException.ThrowIfNull(context);
+
             // Get the Razor service from the service collection if it's in there
             RazorService razorService = context.GetRequiredService<RazorService>();
 

@@ -15,7 +15,7 @@
     <None Include="Statiq.App.targets" Pack="true" PackagePath="buildTransitive\$(TargetFramework)\" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.1.0" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp.Scripting" Version="4.10.0" />
     <PackageReference Include="NetEscapades.Configuration.Yaml" Version="3.1.0" />
     <PackageReference Include="NetEscapades.Extensions.Logging.RollingFile" Version="2.2.0" />
     <PackageReference Include="Spectre.Console" Version="0.45.0" />
@@ -32,5 +32,8 @@
     <ProjectReference Include="..\Statiq.Common\Statiq.Common.csproj" />
     <ProjectReference Include="..\Statiq.Core\Statiq.Core.csproj" />
     <ProjectReference Include="..\Statiq.Testing\Statiq.Testing.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" />
   </ItemGroup>
 </Project>
