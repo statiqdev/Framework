@@ -19,19 +19,19 @@ jobs:
       NUGET_CERT_REVOCATION_MODE: offline
     steps:
       - name: Get Source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install .NET Core SDK
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            3.1.x
-            6.0.x
+            8.0.x
+            9.0.x
       - name: Build and Test
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
       - name: Upload Test Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results-${{ matrix.os }}
