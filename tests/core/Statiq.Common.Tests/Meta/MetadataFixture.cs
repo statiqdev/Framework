@@ -157,7 +157,7 @@ namespace Statiq.Common.Tests.Meta
 
                 // Then
                 Assert.That(contains, Is.False);
-                Assert.That(value, Is.EquivalentTo(null));
+                Assert.That(value, Is.Null);
             }
 
             [Test]

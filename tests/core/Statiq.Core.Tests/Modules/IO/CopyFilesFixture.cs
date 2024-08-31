@@ -62,7 +62,7 @@ namespace Statiq.Core.Tests.Modules.IO
                 // Then
                 Assert.That(context.FileSystem.GetOutputFile("test-a.txt").Exists, Is.True);
                 Assert.That(context.FileSystem.GetOutputFile("test-b.txt").Exists, Is.True);
-                Assert.That(context.FileSystem.GetOutputFile("Subfolder/test-c.txt").Exists, Is.True);
+                Assert.That(context.FileSystem.GetOutputFile("Subfolder/test-c.txt").Exists, Is.False);
                 Assert.That(context.FileSystem.GetOutputDirectory("Subfolder").Exists, Is.False);
                 Assert.That(context.FileSystem.GetOutputFile("markdown-x.md").Exists, Is.False);
                 Assert.That(context.FileSystem.GetOutputFile("Subfolder/markdown-y.md").Exists, Is.False);

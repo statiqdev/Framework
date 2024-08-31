@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,6 +15,14 @@ namespace Statiq.Lunr.Tests
     [TestFixture]
     public class GenerateLunrIndexFixture : BaseFixture
     {
+        [SetUp]
+        public void SetUp()
+        {
+            // Set the culture to en-US for the tests, otherwise tests with decimals fail on machines with , as decimal seperator
+            CultureInfo.CurrentCulture = new CultureInfo("en-US");
+            CultureInfo.CurrentUICulture = new CultureInfo("en-US");
+        }
+
         public class ExecuteTests : GenerateLunrIndexFixture
         {
             [Test]
@@ -541,7 +550,7 @@ namespace Statiq.Lunr.Tests
 
                 // Then
                 TestDocument indexDocument = results.ShouldHaveSingleWithDestination(GenerateLunrIndex.DefaultScriptPath.ChangeExtension(".index.json"));
-                indexDocument.Content.ShouldContain(expected);
+                indexDocument.Content.ShouldContainWithoutWhitespace(expected); // ShouldContain is clipped to first 100 chars, but occurrence is beyond. This method is not clipped; Workaround
             }
 
             [Test]
