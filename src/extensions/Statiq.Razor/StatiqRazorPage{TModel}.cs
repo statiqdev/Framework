@@ -52,6 +52,8 @@ namespace Statiq.Razor
         /// <returns>The HTML content.</returns>
         public IHtmlContent RenderSection(string name, Func<dynamic, HelperResult> defaultContents)
         {
+            ArgumentNullException.ThrowIfNull(defaultContents);
+
             if (IsSectionDefined(name))
             {
                 return RenderSection(name);

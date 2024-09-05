@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace Statiq.Razor.Tests
@@ -7,6 +8,8 @@ namespace Statiq.Razor.Tests
     {
         public override async Task ProcessAsync(TagHelperContext context, TagHelperOutput output)
         {
+            ArgumentNullException.ThrowIfNull(output);
+
             output.TagName = "a";    // Replaces <email> with <a> tag
             string address = (await output.GetChildContentAsync()).GetContent() + "@foo.com";
             output.Attributes.SetAttribute("href", "mailto:" + address);

@@ -40,7 +40,7 @@ namespace Statiq.Core.Tests.Modules.Extensibility
                 IReadOnlyList<TestDocument> outputs = await ExecuteAsync(inputs, execute);
 
                 // Then
-                CollectionAssert.AreEqual(inputs, outputs);
+                Assert.That(outputs, Is.EqualTo(inputs));
             }
 
             [Test]
@@ -156,7 +156,7 @@ namespace Statiq.Core.Tests.Modules.Extensibility
                 IReadOnlyList<TestDocument> outputs = await ExecuteAsync(inputs, execute);
 
                 // Then
-                CollectionAssert.AreEqual(inputs, outputs);
+                Assert.That(outputs, Is.EqualTo(inputs));
             }
 
             [Test]
@@ -174,7 +174,7 @@ namespace Statiq.Core.Tests.Modules.Extensibility
                 IReadOnlyList<TestDocument> result = await ExecuteAsync(count, execute);
 
                 // Then
-                CollectionAssert.AreEquivalent(document, result.Single());
+                Assert.That(result.Single(), Is.EqualTo(document));
             }
 
             [Test]

@@ -12,26 +12,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-latest, macos-latest]
+        os: [windows-latest, ubuntu-latest, macos-14] # macos-latest runs on arm64e causing issues with .net 8 (https://github.com/actions/runner-images/issues/9766)
     env:
       # https://github.com/NuGet/Home/issues/11548
       # https://twitter.com/xoofx/status/1488617114940452872?s=20&t=BKSN4j9rP6fOyg8l7aW0eg
       NUGET_CERT_REVOCATION_MODE: offline
     steps:
       - name: Get Source
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           submodules: recursive
       - name: Install .NET Core SDK
-        uses: actions/setup-dotnet@v1
+        uses: actions/setup-dotnet@v4
         with:
           dotnet-version: |
-            3.1.x
-            6.0.x
+            8.0.x
       - name: Build and Test
         run: dotnet test --logger "trx;LogFileName=test-results.trx"
       - name: Upload Test Results
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         if: success() || failure()
         with:
           name: test-results-${{ matrix.os }}

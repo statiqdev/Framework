@@ -141,7 +141,7 @@ namespace Statiq.Core
             FileCleaner = Services.GetRequiredService<IFileCleaner>();
 
             _diagnosticsTraceListener = new DiagnosticsTraceListener(Logger);
-            Trace.Listeners.Add(_diagnosticsTraceListener);
+            System.Diagnostics.Trace.Listeners.Add(_diagnosticsTraceListener);
 
             // Add the service-based pipelines as late as possible so other services have been configured
             AddServicePipelines();
@@ -1140,7 +1140,7 @@ namespace Statiq.Core
                 }
             }
 
-            Trace.Listeners.Remove(_diagnosticsTraceListener);
+            System.Diagnostics.Trace.Listeners.Remove(_diagnosticsTraceListener);
             FileCleaner.CleanDirectory(FileSystem.GetTempDirectory(), "temp");
             _serviceScope.Dispose();
             _disposed = true;

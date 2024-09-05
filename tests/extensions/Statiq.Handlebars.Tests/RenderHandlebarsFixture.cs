@@ -187,7 +187,11 @@ namespace Statiq.Handlebars.Tests
                     .WithHelper(
                         "link_to",
                         Config.FromValue<HandlebarsHelper>((writer, context, _) =>
-                            HandlebarsExtensions.WriteSafeString(writer, "<a href='" + context.url + "'>" + context.text + "</a>")));
+                        {
+                            string url = context.GetValue<string>("url");
+                            string text = context.GetValue<string>("text");
+                            HandlebarsExtensions.WriteSafeString(writer, $"<a href='{url}'>{text}</a>");
+                        }));
 
                 // When
                 TestDocument result = await ExecuteAsync(document, handlebars).SingleAsync();
@@ -201,7 +205,7 @@ namespace Statiq.Handlebars.Tests
             {
                 // Given
                 const string input = @"{{#each animals}}
-The animal, {{name}}, {{StringEqualityBlockHelper type 'dog'}}is a dog{{else}}is not a dog{{/StringEqualityBlockHelper}}.
+The animal, {{name}}, {{#StringEqualityBlockHelper type 'dog'}}is a dog{{else}}is not a dog{{/StringEqualityBlockHelper}}.
 {{/each}}";
                 const string output = @"The animal, Fluffy, is not a dog.
 The animal, Fido, is a dog.
@@ -302,7 +306,11 @@ The animal, Chewy, is not a dog.
 
                 RenderHandlebars handlebars = new RenderHandlebars()
                     .Configure((_, __, x) => x.RegisterHelper("link_to", (writer, context, _) =>
-                        HandlebarsExtensions.WriteSafeString(writer, "<a href='" + context.url + "'>" + context.text + "</a>")));
+                    {
+                        string url = context.GetValue<string>("url");
+                        string text = context.GetValue<string>("text");
+                        HandlebarsExtensions.WriteSafeString(writer, $"<a href='{url}'>{text}</a>");
+                    }));
 
                 // When
                 TestDocument result = await ExecuteAsync(document, handlebars).SingleAsync();
@@ -316,7 +324,7 @@ The animal, Chewy, is not a dog.
             {
                 // Given
                 const string input = @"{{#each animals}}
-The animal, {{name}}, {{StringEqualityBlockHelper type 'dog'}}is a dog{{else}}is not a dog{{/StringEqualityBlockHelper}}.
+The animal, {{name}}, {{#StringEqualityBlockHelper type 'dog'}}is a dog{{else}}is not a dog{{/StringEqualityBlockHelper}}.
 {{/each}}";
                 const string output = @"The animal, Fluffy, is not a dog.
 The animal, Fido, is a dog.
@@ -338,22 +346,22 @@ The animal, Chewy, is not a dog.
 
                 RenderHandlebars handlebars = new RenderHandlebars()
                     .Configure((_, __, x) => x.RegisterHelper("StringEqualityBlockHelper", (writer, options, __, arguments) =>
+                    {
+                        if (arguments.Length != 2)
                         {
-                            if (arguments.Length != 2)
-                            {
-                                throw new HandlebarsException("{{StringEqualityBlockHelper}} helper must have exactly two argument");
-                            }
-                            string left = arguments[0] as string;
-                            string right = arguments[1] as string;
-                            if (left == right)
-                            {
-                                options.Template(writer, null);
-                            }
-                            else
-                            {
-                                options.Inverse(writer, null);
-                            }
-                        }));
+                            throw new HandlebarsException("{{StringEqualityBlockHelper}} helper must have exactly two argument");
+                        }
+                        string left = arguments[0] as string;
+                        string right = arguments[1] as string;
+                        if (left == right)
+                        {
+                            options.Template(writer, null);
+                        }
+                        else
+                        {
+                            options.Inverse(writer, null);
+                        }
+                    }));
 
                 // When
                 TestDocument result = await ExecuteAsync(document, handlebars).SingleAsync();

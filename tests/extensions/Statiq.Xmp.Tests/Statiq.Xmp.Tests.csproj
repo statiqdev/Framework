@@ -1,4 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+  </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\..\src\core\Statiq.Common\Statiq.Common.csproj" />
     <ProjectReference Include="..\..\..\src\core\Statiq.Testing\Statiq.Testing.csproj" />
@@ -17,5 +20,10 @@
     <Content Include="Samples\RomantiqeInitials.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.10.0" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" />
+    <PackageReference Update="NUnit3TestAdapter" Version="4.6.0" />
   </ItemGroup>
 </Project>

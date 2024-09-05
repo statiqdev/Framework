@@ -2,14 +2,18 @@
   <PropertyGroup>
     <Description>Statiq is a configurable static content generation framework. This library provides support for interacting with YouTube.</Description>
     <PackageTags>Statiq Static StaticContent StaticSite Blog BlogEngine YouTube</PackageTags>
+    <TargetFramework>net8.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Google.Apis" Version="1.29.1" />
-    <PackageReference Include="Google.Apis.Auth" Version="1.29.1" />
-    <PackageReference Include="Google.Apis.Core" Version="1.29.1" />
-    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.29.1.760" />
+    <PackageReference Include="Google.Apis" Version="1.68.0" />
+    <PackageReference Include="Google.Apis.Auth" Version="1.68.0" />
+    <PackageReference Include="Google.Apis.Core" Version="1.68.0" />
+    <PackageReference Include="Google.Apis.YouTube.v3" Version="1.68.0.3421" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\core\Statiq.Common\Statiq.Common.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.10.48" />
   </ItemGroup>
 </Project>
