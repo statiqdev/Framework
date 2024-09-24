@@ -10,6 +10,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
+        # libsass.dylib is not working on macos-14
         os: [windows-latest, ubuntu-latest, macos-13]
     steps:
       - name: Process Test Results
