@@ -3,7 +3,7 @@
     <ProjectReference Include="..\..\..\src\core\Statiq.Common\Statiq.Common.csproj" />
     <ProjectReference Include="..\..\..\src\core\Statiq.Core\Statiq.Core.csproj" />
     <ProjectReference Include="..\..\..\src\core\Statiq.Testing\Statiq.Testing.csproj" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.1" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Scripting\" />
