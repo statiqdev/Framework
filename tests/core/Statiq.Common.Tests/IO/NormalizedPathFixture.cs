@@ -591,7 +591,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath path = new NormalizedPath(fullPath);
 
                 // Then
-                Assert.AreEqual(expected, path.HasExtension);
+                Assert.That(path.HasExtension, Is.EqualTo(expected));
             }
         }
 
@@ -610,7 +610,7 @@ namespace Statiq.Common.Tests.IO
                 string extension = result.Extension;
 
                 // Then
-                Assert.AreEqual(expected, extension);
+                Assert.That(extension, Is.EqualTo(expected));
             }
         }
 
@@ -626,7 +626,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath directory = path.Parent;
 
                 // Then
-                Assert.AreEqual("temp", directory.FullPath);
+                Assert.That(directory.FullPath, Is.EqualTo("temp"));
             }
 
             [Test]
@@ -662,7 +662,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath rootRelative = path.RootRelative;
 
                 // Then
-                Assert.AreEqual(expected, rootRelative.FullPath);
+                Assert.That(rootRelative.FullPath, Is.EqualTo(expected));
             }
 
             [TestCase(@"\a\b\c")]
@@ -682,7 +682,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath rootRelative = path.RootRelative;
 
                 // Then
-                Assert.AreEqual(path.FullPath, rootRelative.FullPath);
+                Assert.That(rootRelative.FullPath, Is.EqualTo(path.FullPath));
             }
         }
 
@@ -711,7 +711,7 @@ namespace Statiq.Common.Tests.IO
                 normalized = normalized.ChangeExtension(extension);
 
                 // Then
-                Assert.AreEqual(expected, normalized.ToString());
+                Assert.That(normalized.ToString(), Is.EqualTo(expected));
             }
 
             [TestCase("foo")]
@@ -755,7 +755,7 @@ namespace Statiq.Common.Tests.IO
                 path = path.AppendExtension(extension);
 
                 // Then
-                Assert.AreEqual(expected, path.ToString());
+                Assert.That(path.ToString(), Is.EqualTo(expected));
             }
         }
 
@@ -787,7 +787,7 @@ namespace Statiq.Common.Tests.IO
                 filePath = filePath.InsertSuffix(suffix);
 
                 // Then
-                Assert.AreEqual(expected, filePath.FullPath);
+                Assert.That(filePath.FullPath, Is.EqualTo(expected));
             }
         }
 
@@ -820,7 +820,7 @@ namespace Statiq.Common.Tests.IO
                 filePath = filePath.InsertPrefix(prefix);
 
                 // Then
-                Assert.AreEqual(expected, filePath.FullPath);
+                Assert.That(filePath.FullPath, Is.EqualTo(expected));
             }
         }
 
@@ -985,7 +985,7 @@ namespace Statiq.Common.Tests.IO
                 string result = path.Name;
 
                 // Then
-                Assert.AreEqual(name, result);
+                Assert.That(result, Is.EqualTo(name));
             }
         }
 
@@ -1006,7 +1006,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath parent = path.Parent;
 
                 // Then
-                Assert.AreEqual(expected, parent.FullPath);
+                Assert.That(parent.FullPath, Is.EqualTo(expected));
             }
 
             [TestCase(".")]
@@ -1078,7 +1078,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath result = path.GetFilePath(new NormalizedPath(second));
 
                 // Then
-                Assert.AreEqual(expected, result.FullPath);
+                Assert.That(result.FullPath, Is.EqualTo(expected));
             }
         }
 
@@ -1121,7 +1121,7 @@ namespace Statiq.Common.Tests.IO
                 NormalizedPath result = path.Combine(new NormalizedPath(second));
 
                 // Then
-                Assert.AreEqual(expected, result.FullPath);
+                Assert.That(result.FullPath, Is.EqualTo(expected));
             }
         }
 

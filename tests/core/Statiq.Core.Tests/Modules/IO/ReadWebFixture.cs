@@ -41,14 +41,17 @@ namespace Statiq.Core.Tests.Modules.IO
                 // Then
                 Dictionary<string, string> headers = result[Keys.SourceHeaders] as Dictionary<string, string>;
 
-                Assert.IsNotNull(headers, "Header cannot be null");
-                Assert.IsTrue(headers.Count > 0, "Headers must contain contents");
-
-                foreach (KeyValuePair<string, string> h in headers)
+                Assert.Multiple(() =>
                 {
-                    Assert.IsNotEmpty(h.Key, "Header key cannot be empty");
-                    Assert.IsNotEmpty(h.Value, "Header value cannot be empty");
-                }
+                    Assert.That(headers, Is.Not.Null, "Header cannot be null");
+                    Assert.That(headers, Is.Not.Empty, "Headers must contain contents");
+
+                    foreach (KeyValuePair<string, string> h in headers)
+                    {
+                            Assert.That(h.Key, Is.Not.Empty, "Header key cannot be empty");
+                            Assert.That(h.Value, Is.Not.Empty, "Header value cannot be empty");
+                    }
+                });
 
                 result.Content.ShouldNotBeEmpty();
             }
@@ -81,14 +84,17 @@ namespace Statiq.Core.Tests.Modules.IO
                 {
                     Dictionary<string, string> headers = result[Keys.SourceHeaders] as Dictionary<string, string>;
 
-                    Assert.IsNotNull(headers, "Header cannot be null");
-                    Assert.IsTrue(headers.Count > 0, "Headers must contain contents");
-
-                    foreach (KeyValuePair<string, string> h in headers)
+                    Assert.Multiple(() =>
                     {
-                        Assert.IsNotEmpty(h.Key, "Header key cannot be empty");
-                        Assert.IsNotEmpty(h.Value, "Header value cannot be empty");
-                    }
+                        Assert.That(headers, Is.Not.Null, "Header cannot be null");
+                        Assert.That(headers, Is.Not.Empty, "Headers must contain contents");
+
+                        foreach (KeyValuePair<string, string> h in headers)
+                        {
+                                Assert.That(h.Key, Is.Not.Empty, "Header key cannot be empty");
+                                Assert.That(h.Value, Is.Not.Empty, "Header value cannot be empty");
+                        }
+                    });
 
                     result.Content.ShouldNotBeEmpty();
                 }

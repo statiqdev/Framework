@@ -40,10 +40,13 @@ namespace Statiq.Core.Tests.Modules.Control
                 await ExecuteAsync(count, paginate, gatherData);
 
                 // Then
-                Assert.AreEqual(3, content.Count);
-                CollectionAssert.AreEqual(new[] { "1", "2", "3" }, content[0]);
-                CollectionAssert.AreEqual(new[] { "4", "5", "6" }, content[1]);
-                CollectionAssert.AreEqual(new[] { "7", "8" }, content[2]);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(content, Has.Count.EqualTo(3));
+                    Assert.That(content[0], Is.EqualTo(new[] { "1", "2", "3" }).AsCollection);
+                    Assert.That(content[1], Is.EqualTo(new[] { "4", "5", "6" }).AsCollection);
+                    Assert.That(content[2], Is.EqualTo(new[] { "7", "8" }).AsCollection);
+                });
             }
 
             [Test]

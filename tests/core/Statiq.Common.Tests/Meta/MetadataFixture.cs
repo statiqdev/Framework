@@ -60,7 +60,7 @@ namespace Statiq.Common.Tests.Meta
                 object value = metadata["A"];
 
                 // Then
-                Assert.AreEqual("a", value);
+                Assert.That(value, Is.EqualTo("a"));
             }
 
             [Test]
@@ -77,7 +77,7 @@ namespace Statiq.Common.Tests.Meta
                 object value = metadata["a"];
 
                 // Then
-                Assert.AreEqual("a", value);
+                Assert.That(value, Is.EqualTo("a"));
             }
         }
 
@@ -94,7 +94,7 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.ContainsKey("A");
 
                 // Then
-                Assert.IsTrue(contains);
+                Assert.That(contains, Is.True);
             }
 
             [Test]
@@ -108,7 +108,7 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.ContainsKey("B");
 
                 // Then
-                Assert.IsFalse(contains);
+                Assert.That(contains, Is.False);
             }
 
             [Test]
@@ -122,7 +122,7 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.ContainsKey("a");
 
                 // Then
-                Assert.IsTrue(contains);
+                Assert.That(contains, Is.True);
             }
         }
 
@@ -140,8 +140,8 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.TryGetValue("A", out value);
 
                 // Then
-                Assert.IsTrue(contains);
-                Assert.AreEqual("a", value);
+                Assert.That(contains, Is.True);
+                Assert.That(value, Is.EqualTo("a"));
             }
 
             [Test]
@@ -156,8 +156,11 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.TryGetValue("B", out value);
 
                 // Then
-                Assert.IsFalse(contains);
-                Assert.AreEqual(null, value);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(contains, Is.False);
+                    Assert.That(value, Is.EqualTo(null));
+                });
             }
 
             [Test]
@@ -175,8 +178,11 @@ namespace Statiq.Common.Tests.Meta
                 bool contains = metadata.TryGetValue("A", out value);
 
                 // Then
-                Assert.IsTrue(contains);
-                Assert.AreEqual("a", value);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(contains, Is.True);
+                    Assert.That(value, Is.EqualTo("a"));
+                });
             }
         }
 
@@ -193,7 +199,7 @@ namespace Statiq.Common.Tests.Meta
                 metadata = new Metadata(metadata, new[] { new KeyValuePair<string, object>("A", "a") });
 
                 // Then
-                Assert.AreEqual("a", metadata["A"]);
+                Assert.That(metadata["A"], Is.EqualTo("a"));
             }
 
             [Test]
@@ -207,7 +213,7 @@ namespace Statiq.Common.Tests.Meta
                 Metadata clone = new Metadata(metadata, new Dictionary<string, object> { { "B", "b" } });
 
                 // Then
-                Assert.AreEqual("a", clone["A"]);
+                Assert.That(clone["A"], Is.EqualTo("a"));
             }
 
             [Test]
@@ -221,7 +227,7 @@ namespace Statiq.Common.Tests.Meta
                 Metadata clone = new Metadata(metadata, new Dictionary<string, object> { { "B", "b" } });
 
                 // Then
-                Assert.IsFalse(metadata.ContainsKey("B"));
+                Assert.That(metadata.ContainsKey("B"), Is.False);
             }
 
             [Test]
@@ -235,7 +241,7 @@ namespace Statiq.Common.Tests.Meta
                 Metadata clone = new Metadata(metadata, new Dictionary<string, object> { { "B", "b" } });
 
                 // Then
-                Assert.AreEqual("b", clone["B"]);
+                Assert.That(clone["B"], Is.EqualTo("b"));
             }
 
             [Test]
@@ -249,8 +255,11 @@ namespace Statiq.Common.Tests.Meta
                 Metadata clone = new Metadata(metadata, new Dictionary<string, object> { { "A", "b" } });
 
                 // Then
-                Assert.AreEqual("a", metadata["A"]);
-                Assert.AreEqual("b", clone["A"]);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(metadata["A"], Is.EqualTo("a"));
+                    Assert.That(clone["A"], Is.EqualTo("b"));
+                });
             }
         }
 
@@ -267,7 +276,7 @@ namespace Statiq.Common.Tests.Meta
                 object value = metadata.Get("A");
 
                 // Then
-                Assert.AreEqual("a", value);
+                Assert.That(value, Is.EqualTo("a"));
             }
 
             [Test]
@@ -285,7 +294,7 @@ namespace Statiq.Common.Tests.Meta
                 object value = metadata.Get("A");
 
                 // Then
-                Assert.AreEqual("x", value);
+                Assert.That(value, Is.EqualTo("x"));
             }
 
             [Test]
@@ -302,8 +311,11 @@ namespace Statiq.Common.Tests.Meta
                 value = metadata.Get("A");
 
                 // Then
-                Assert.AreEqual("a", value);
-                Assert.AreEqual(3, metadataValue.Calls);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(value, Is.EqualTo("a"));
+                    Assert.That(metadataValue.Calls, Is.EqualTo(3));
+                });
             }
         }
 
@@ -320,8 +332,11 @@ namespace Statiq.Common.Tests.Meta
                 IReadOnlyList<int> result = metadata.GetList<int>("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(result, new[] { 1, 2, 3 });
+                Assert.Multiple(() =>
+                {
+                    Assert.That(result, Is.Not.Null);
+                    Assert.That(new[] { 1, 2, 3 }, Is.EqualTo(result).AsCollection);
+                });
             }
 
             [Test]
@@ -335,8 +350,8 @@ namespace Statiq.Common.Tests.Meta
                 IReadOnlyList<int> result = metadata.GetList<int>("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(result, new[] { 1, 2, 3 });
+                Assert.That(result, Is.Not.Null);
+                Assert.That(new[] { 1, 2, 3 }, Is.EqualTo(result).AsCollection);
             }
 
             [Test]
@@ -350,8 +365,8 @@ namespace Statiq.Common.Tests.Meta
                 IReadOnlyList<string> result = metadata.GetList<string>("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(result, new[] { "1", "2", "3" });
+                Assert.That(result, Is.Not.Null);
+                Assert.That(new[] { "1", "2", "3" }, Is.EqualTo(result).AsCollection);
             }
 
             [Test]
@@ -365,8 +380,8 @@ namespace Statiq.Common.Tests.Meta
                 IReadOnlyList<int> result = metadata.GetList<int>("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(result, new[] { 1, 2, 3 });
+                Assert.That(result, Is.Not.Null);
+                Assert.That(new[] { 1, 2, 3 }, Is.EqualTo(result).AsCollection);
             }
         }
 
@@ -400,8 +415,8 @@ namespace Statiq.Common.Tests.Meta
                 IEnumerable<IDocument> result = metadata.GetDocuments("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(new[] { a, b, c }, result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.EqualTo(new[] { a, b, c }).AsCollection);
             }
 
             [Test]
@@ -415,8 +430,8 @@ namespace Statiq.Common.Tests.Meta
                 IEnumerable<IDocument> result = metadata.GetDocuments("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.IsEmpty(result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.Empty);
             }
 
             [Test]
@@ -430,8 +445,8 @@ namespace Statiq.Common.Tests.Meta
                 IEnumerable<IDocument> result = metadata.GetDocuments("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.IsEmpty(result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.Empty);
             }
         }
 
@@ -448,7 +463,7 @@ namespace Statiq.Common.Tests.Meta
                 DocumentList<IDocument> result = metadata.GetDocumentList("A");
 
                 // Then
-                Assert.IsEmpty(result);
+                Assert.That(result, Is.Empty);
             }
 
             [Test]
@@ -465,8 +480,8 @@ namespace Statiq.Common.Tests.Meta
                 DocumentList<IDocument> result = metadata.GetDocumentList("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.AreEqual(new[] { a, b, c }, result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.EqualTo(new[] { a, b, c }).AsCollection);
             }
 
             [Test]
@@ -480,8 +495,8 @@ namespace Statiq.Common.Tests.Meta
                 DocumentList<IDocument> result = metadata.GetDocumentList("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.IsEmpty(result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.Empty);
             }
 
             [Test]
@@ -495,8 +510,8 @@ namespace Statiq.Common.Tests.Meta
                 DocumentList<IDocument> result = metadata.GetDocumentList("A");
 
                 // Then
-                Assert.IsNotNull(result);
-                CollectionAssert.IsEmpty(result);
+                Assert.That(result, Is.Not.Null);
+                Assert.That(result, Is.Empty);
             }
         }
 
@@ -515,8 +530,8 @@ namespace Statiq.Common.Tests.Meta
                 object result = metadata.GetString("A");
 
                 // Then
-                Assert.IsInstanceOf<string>(result);
-                Assert.AreEqual(expected, result);
+                Assert.That(result, Is.InstanceOf<string>());
+                Assert.That(result, Is.EqualTo(expected));
             }
 
             [TestCase("/a/b/c", "/a/b/c")]
@@ -532,8 +547,8 @@ namespace Statiq.Common.Tests.Meta
                 object result = metadata.GetString("A");
 
                 // Then
-                Assert.IsInstanceOf<string>(result);
-                Assert.AreEqual(expected, result);
+                Assert.That(result, Is.InstanceOf<string>());
+                Assert.That(result, Is.EqualTo(expected));
             }
         }
 
@@ -638,7 +653,7 @@ namespace Statiq.Common.Tests.Meta
                 object[] values = metadata.Select(x => x.Value).ToArray();
 
                 // Then
-                CollectionAssert.AreEquivalent(new[] { "a", "b", "c" }, values);
+                Assert.That(values, Is.EquivalentTo(new[] { "a", "b", "c" }));
             }
         }
 

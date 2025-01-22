@@ -35,7 +35,7 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(count, groupByMany, gatherData);
 
                 // Then
-                CollectionAssert.AreEquivalent(new[] { 0, 1, 2, 3 }, groupKey);
+                Assert.That(groupKey, Is.EquivalentTo(new[] { 0, 1, 2, 3 }));
             }
 
             [Test]
@@ -66,11 +66,14 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(count, groupByMany, orderBy, gatherData);
 
                 // Then
-                Assert.AreEqual(4, content.Count);
-                CollectionAssert.AreEquivalent(new[] { "3", "6" }, content[0]);
-                CollectionAssert.AreEquivalent(new[] { "1", "4", "7" }, content[1]);
-                CollectionAssert.AreEquivalent(new[] { "2", "5", "8" }, content[2]);
-                CollectionAssert.AreEquivalent(new[] { "1", "2", "3", "4", "5", "6", "7", "8" }, content[3]);
+                Assert.Multiple(() =>
+                {
+                    Assert.That(content, Has.Count.EqualTo(4));
+                    Assert.That(content[0], Is.EquivalentTo(new[] { "3", "6" }));
+                    Assert.That(content[1], Is.EquivalentTo(new[] { "1", "4", "7" }));
+                    Assert.That(content[2], Is.EquivalentTo(new[] { "2", "5", "8" }));
+                    Assert.That(content[3], Is.EquivalentTo(new[] { "1", "2", "3", "4", "5", "6", "7", "8" }));
+                });
             }
 
             [Test]
@@ -96,7 +99,7 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(count, meta, groupByMany, gatherData);
 
                 // Then
-                CollectionAssert.AreEquivalent(new[] { 0, 1, 2, 3 }, groupKey);
+                Assert.That(groupKey, Is.EquivalentTo(new[] { 0, 1, 2, 3 }));
             }
 
             [Test]
@@ -127,7 +130,7 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(count, meta, groupByMany, gatherData);
 
                 // Then
-                CollectionAssert.AreEquivalent(new[] { 1, 2, 3 }, groupKey);
+                Assert.That(groupKey, Is.EquivalentTo(new[] { 1, 2, 3 }));
             }
 
             [Test]
@@ -157,7 +160,7 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(meta, groupByMany, gatherData);
 
                 // Then
-                CollectionAssert.AreEquivalent(new object[] { "A", "B", "b", "C", "c", 1, "1" }, groupKey);
+                Assert.That(groupKey, Is.EquivalentTo(new object[] { "A", "B", "b", "C", "c", 1, "1" }));
             }
 
             [Test]
@@ -187,7 +190,7 @@ namespace Statiq.Core.Tests.Modules.Control
                 IReadOnlyList<IDocument> results = await ExecuteAsync(meta, groupByMany, gatherData);
 
                 // Then
-                CollectionAssert.AreEquivalent(new object[] { "A", "b", "C", 1 }, groupKey);
+                Assert.That(groupKey, Is.EquivalentTo(new object[] { "A", "b", "C", 1 }));
             }
         }
     }
