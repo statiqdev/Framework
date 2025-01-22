@@ -18,7 +18,7 @@
       SYSLIB0010: 'MarshalByRefObject.InitializeLifetimeService()' is obsolete: 'This Remoting API is not supported and throws PlatformNotSupportedException.'
     -->
     <NoWarn>CA1021;CA1040;CA1062;CA1505;CA1710;CA1711;CA1720;CA1721;CA1725;CS0672;SYSLIB0010;SYSLIB0013;VSTHRD103;$(NoWarn)</NoWarn>
-    <TargetFrameworks>net6.0;net8.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
     <Version Condition="'$(StatiqFrameworkVersion)' == ''">1.0.0</Version>
     <Version Condition="'$(StatiqFrameworkVersion)' != ''">$(StatiqFrameworkVersion)</Version>
     <InformationalVersion>$(Version)</InformationalVersion>
